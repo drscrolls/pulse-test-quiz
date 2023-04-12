@@ -1,5 +1,6 @@
 import React from 'react'
 import Question from '../../components/question'
+import { useState } from 'react';
 
 const questions = [
     {
@@ -26,15 +27,25 @@ const questions = [
 
 
 export default function Quiz() {
-  return (
-    <div>
-      <h1 align="center">QUIZ</h1>
-      <p align="center">Answer the following questions below</p>
+    const [score, setScore] = useState(0);
 
-        <div align="center">
-            <Question data={questions[0]} />
+
+    return (
+        <div>
+            <h1 align="center">QUIZ</h1>
+            <p align="center">Answer the following questions below</p>
+
+            <div>
+                <button type="button" class="btn btn-dark">Score: {score}</button>
+            </div>
+
+            <div className='pt-3' align="center">
+                {
+                    questions.map((question, index) => <Question data={question} questionNumber={index + 1} totalQuestions={questions.length} key={index} />)
+                }
+
+            </div>
 
         </div>
-    </div>
-  )
+    )
 }

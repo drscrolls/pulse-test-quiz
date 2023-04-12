@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 
 
-export default function Question({ data }) {
+export default function Question({ data, questionNumber, totalQuestions }) {
     let { question, answer, options } = data;
 
     const [selectedAnswer, setSelectedAnswer] = useState('');
@@ -16,6 +16,9 @@ export default function Question({ data }) {
         setSelectedAnswer(val);
     }
 
+    const handleNextQuestion = () => {
+        
+    }
 
     const OptionComponent = ({ text }) => {
         return (
@@ -30,8 +33,17 @@ export default function Question({ data }) {
     return (
         <div className="card" style={{ width: "60%" }}>
             <div className="card-body">
-                <h5 className="card-title mb-4">{question}</h5>
+                <h5 className="card-title mb-4">Question {questionNumber}: {question}</h5>
                 {options.map((item, index) => <OptionComponent key={index} text={item} />)}
+            </div>
+
+            <div class="card-footer mt-3">
+                {
+                    questionNumber < totalQuestions ? 
+                    <button type="button" class="btn btn-primary">Next</button>
+                    :
+                    <button type="button" class="btn btn-primary">Finish</button>
+                }
             </div>
         </div>
     )
