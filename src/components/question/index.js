@@ -3,17 +3,19 @@ import "./style.css";
 
 
 
-export default function Question({ data, questionNumber, totalQuestions }) {
-    let { question, answer, options } = data;
+export default function Question({ data, totalQuestions, goToNextQuestion, finishQuiz }) {
+    let { question, answer, options, isVisible, qid } = data;
 
     const [selectedAnswer, setSelectedAnswer] = useState(null);
 
     const [error, setError] = useState('');
     const [showError, setShowError] = useState(false);
 
+
+
     useEffect(() => {
-        //   console.log('selectedAnswer', selectedAnswer);
-    }, [selectedAnswer])
+        // setIsQuestionShowing(isVisible);
+    }, [])
 
 
     const handleSelect = (val) => {
@@ -23,11 +25,23 @@ export default function Question({ data, questionNumber, totalQuestions }) {
 
     const handleNextQuestion = () => {
         setShowError(false);
-        if(!selectedAnswer){
+        if (!selectedAnswer) {
             setError('Please select an answer');
             setShowError(true);
-        }else{
+        } else {
+            let qIndex = qid - 1;
+            goToNextQuestion(qIndex, selectedAnswer);
+        }
+    }
 
+    const handleFinish = () => {
+        setShowError(false);
+        if (!selectedAnswer) {
+            setError('Please select an answer');
+            setShowError(true);
+        } else {
+            let qIndex = qid - 1;
+            finishQuiz(qIndex, selectedAnswer);
         }
     }
 
@@ -42,24 +56,30 @@ export default function Question({ data, questionNumber, totalQuestions }) {
 
 
     return (
-        <div className="card" style={{ width: "60%" }}>
-            <div className="card-body">
-                <h5 className="card-title mb-4">Question {questionNumber}: {question}</h5>
+        <div className={"card " + (!isVisible ? 'd-none' : '')} style={{ width: "60%" }}>
 
-                {showError ? <p className="card-title my-4 text-danger">{error}</p> : <></>}
-                
+            {
+                !data ? <></> : <><div className="card-body">
+                    <h5 className="card-title mb-4">Question {qid}: {question}</h5>
 
-                {options.map((item, index) => <OptionComponent key={index} text={item} />)}
-            </div>
+                    {showError ? <p className="card-title my-4 text-danger">{error}</p> : <></>}
 
-            <div class="card-footer mt-3">
-                {
-                    questionNumber < totalQuestions ? 
-                    <button type="button" class="btn btn-primary" onClick={()=> handleNextQuestion()}>Next</button>
-                    :
-                    <button type="button" class="btn btn-primary">Finish</button>
-                }
-            </div>
+
+                    {options.map((item, index) => <OptionComponent key={index} text={item} />)}
+                </div>
+                    <div className="card-footer mt-3">
+                        {
+                            qid < totalQuestions ?
+                                <button type="button" className="btn btn-primary" onClick={() => handleNextQuestion()}>Next</button>
+                                :
+                                <button type="button" className="btn btn-primary" onClick={() => handleFinish()}>Finish</button>
+                        }
+                    </div>
+                </>
+            }
+
+
+
         </div>
     )
 }
