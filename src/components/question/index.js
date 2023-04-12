@@ -15,8 +15,10 @@ export default function Question({ data, totalQuestions, goToNextQuestion, finis
 
     // function to update answer if option is selected
     const handleSelect = (val) => {
-        setShowError(false);
-        setSelectedAnswer(val);
+        if(!isSubmitted){
+            setShowError(false);
+            setSelectedAnswer(val);
+        }
     }
 
     // check for answer and submit answer with question id to move to next question
