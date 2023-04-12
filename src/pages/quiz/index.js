@@ -31,40 +31,38 @@ let questions = [
 
 
 export default function Quiz() {
+    // initialize states
     const [score, setScore] = useState(0);
     const [quizQuestions, setQuizQuestions] = useState(questions);
-    const [question, setQuestion] = useState({});
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(null);
     const [isFinished, setIsFinished] = useState(false);
 
-
-    useEffect(() => {
-        if (questions.length > 0) {
-            setQuestion(questions[0]);
-            setCurrentQuestionIndex(0);
-        }
-    }, [])
-
-
+    // method to show final results
     const showResults = (qIndex, selectedAnswer) => {
         let q = quizQuestions[qIndex];
-
-        if (selectedAnswer == q.answer) {
-            setScore(score + 1);
-        }
+        updateScore(selectedAnswer, q);
         setIsFinished(true)
     }
 
-
-    const showNextQuestion = (qIndex, selectedAnswer) => {
-        let nextIndex = qIndex + 1;
-
-        let q = quizQuestions[qIndex];
-
-        if (selectedAnswer == q.answer) {
+    // method to update score
+    const updateScore = (answer, qObj) => {
+        if (answer == qObj.answer) {
             setScore(score + 1);
         }
+    }
 
+    // method to show next question
+    const showNextQuestion = (qIndex, selectedAnswer) => {
+
+        // set index of next question
+        let nextIndex = qIndex + 1;
+
+        //get current question object
+        let q = quizQuestions[qIndex];
+        
+        // update score with the given answer
+        updateScore(selectedAnswer, q);
+
+        // set next question to visible and all others as not visible
         var updatedQuestions = quizQuestions.map((obj, index) => {
             if (index === nextIndex) {
                 return { ...obj, isVisible: true };
@@ -73,10 +71,8 @@ export default function Quiz() {
             }
         });
 
+        // update quiz questions state
         setQuizQuestions(updatedQuestions)
-
-        // console.log('updatedQuestions', updatedQuestions)
-        // console.log('quizQuestions', quizQuestions)
     }
 
 
@@ -86,15 +82,17 @@ export default function Quiz() {
             <h1 align="center">QUIZ</h1>
             <p align="center">Answer the following questions below</p>
 
+            {/* Score display */}
             <div>
                 <button type="button" className="btn btn-dark">Score: {score}</button>
             </div>
 
+            {/* Quiz body */}
             <div className='pt-3' align="center">
                 {
                     !isFinished ?
                         quizQuestions.length > 0 && quizQuestions ?
-                                quizQuestions.map((q, index) => (<Question key={index} data={q} goToNextQuestion={showNextQuestion} finishQuiz={showResults} totalQuestions={questions.length} />))
+                            quizQuestions.map((q, index) => (<Question key={index} data={q} goToNextQuestion={showNextQuestion} finishQuiz={showResults} totalQuestions={questions.length} />))
                             :
                             <>
                                 <h3>No questions found</h3>
