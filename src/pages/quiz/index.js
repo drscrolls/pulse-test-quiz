@@ -1,4 +1,5 @@
 import React from 'react'
+import Question from '../../components/question'
 
 const questions = [
     {
@@ -29,6 +30,11 @@ export default function Quiz() {
     <div>
       <h1 align="center">QUIZ</h1>
       <p align="center">Answer the following questions below</p>
+
+        <div align="center">
+            <Question data={questions[0]} />
+
+        </div>
     </div>
   )
 }
