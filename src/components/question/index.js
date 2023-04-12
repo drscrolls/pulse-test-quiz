@@ -5,7 +5,10 @@ import React, { useEffect, useState } from 'react'
 export default function Question({ data, questionNumber, totalQuestions }) {
     let { question, answer, options } = data;
 
-    const [selectedAnswer, setSelectedAnswer] = useState('');
+    const [selectedAnswer, setSelectedAnswer] = useState(null);
+
+    const [error, setError] = useState('');
+    const [showError, setShowError] = useState(false);
 
     useEffect(() => {
         //   console.log('selectedAnswer', selectedAnswer);
@@ -17,7 +20,13 @@ export default function Question({ data, questionNumber, totalQuestions }) {
     }
 
     const handleNextQuestion = () => {
-        
+        setShowError(false);
+        if(!selectedAnswer){
+            setError('Please select an answer');
+            setShowError(true);
+        }else{
+
+        }
     }
 
     const OptionComponent = ({ text }) => {
@@ -34,13 +43,17 @@ export default function Question({ data, questionNumber, totalQuestions }) {
         <div className="card" style={{ width: "60%" }}>
             <div className="card-body">
                 <h5 className="card-title mb-4">Question {questionNumber}: {question}</h5>
+
+                {showError ? <p className="card-title my-4 text-danger">{error}</p> : <></>}
+                
+
                 {options.map((item, index) => <OptionComponent key={index} text={item} />)}
             </div>
 
             <div class="card-footer mt-3">
                 {
                     questionNumber < totalQuestions ? 
-                    <button type="button" class="btn btn-primary">Next</button>
+                    <button type="button" class="btn btn-primary" onClick={()=> handleNextQuestion()}>Next</button>
                     :
                     <button type="button" class="btn btn-primary">Finish</button>
                 }

@@ -2,7 +2,7 @@ import React from 'react'
 import Question from '../../components/question'
 import { useState } from 'react';
 
-const questions = [
+let questions = [
     {
         question: "What is matter?",
         options: [
@@ -28,6 +28,7 @@ const questions = [
 
 export default function Quiz() {
     const [score, setScore] = useState(0);
+    const [quizQuestions, setQuizQuestions] = useState(questions);
 
 
     return (
@@ -41,7 +42,7 @@ export default function Quiz() {
 
             <div className='pt-3' align="center">
                 {
-                    questions.map((question, index) => <Question data={question} questionNumber={index + 1} totalQuestions={questions.length} key={index} />)
+                    quizQuestions.map((question, index) => <Question data={question} questionNumber={index + 1} totalQuestions={questions.length} key={index} />)
                 }
 
             </div>
