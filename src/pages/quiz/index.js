@@ -54,7 +54,7 @@ export default function Quiz() {
         }
         setIsFinished(true)
     }
-    
+
 
     const showNextQuestion = (qIndex, selectedAnswer) => {
         let nextIndex = qIndex + 1;
@@ -100,7 +100,7 @@ export default function Quiz() {
                                 <h3>No questions found</h3>
                             </>
                         :
-                        <div className='card'>
+                        <div className='card' style={{ width: "80%" }}>
                             <div className='card-body'>
                                 <h2>Finished</h2>
                                 <p>Your score is <b>{score}</b></p>

@@ -10,12 +10,8 @@ export default function Question({ data, totalQuestions, goToNextQuestion, finis
 
     const [error, setError] = useState('');
     const [showError, setShowError] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
-
-
-    useEffect(() => {
-        // setIsQuestionShowing(isVisible);
-    }, [])
 
 
     const handleSelect = (val) => {
@@ -45,9 +41,19 @@ export default function Question({ data, totalQuestions, goToNextQuestion, finis
         }
     }
 
+    const showAnswer = () => {
+        setShowError(false);
+        if (!selectedAnswer) {
+            setError('Please select an answer');
+            setShowError(true);
+        } else {
+            setIsSubmitted(true);
+        }
+    }
+
     const OptionComponent = ({ text }) => {
         return (
-            <div className={"card border-2 mb-2 pointer " + (selectedAnswer == text ? "border-info" : "border-light")} onClick={() => handleSelect(text)}>
+            <div className={"card border-2 mb-2 pointer " + (isSubmitted ? (answer ==  text ? "border-green" : "border-danger") : selectedAnswer == text ? "border-info" : "border-light")} onClick={() => handleSelect(text)}>
                 <div className="card-body">
                     <p className="card-text">{text}</p>
                 </div>
@@ -69,11 +75,15 @@ export default function Question({ data, totalQuestions, goToNextQuestion, finis
                 </div>
                     <div className="card-footer mt-3">
                         {
-                            qid < totalQuestions ?
-                                <button type="button" className="btn btn-primary" onClick={() => handleNextQuestion()}>Next</button>
+                            isSubmitted ? 
+                                qid < totalQuestions ?
+                                    <button type="button" className="btn btn-primary" onClick={() => handleNextQuestion()}>Next</button>
+                                    :
+                                    <button type="button" className="btn btn-primary" onClick={() => handleFinish()}>Finish</button>
                                 :
-                                <button type="button" className="btn btn-primary" onClick={() => handleFinish()}>Finish</button>
+                            <button type="button" className="btn btn-primary" onClick={() => showAnswer()}>Submit</button>
                         }
+                       
                     </div>
                 </>
             }
