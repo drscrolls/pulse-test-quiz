@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import "./style.css";
 
 
 
@@ -16,6 +17,7 @@ export default function Question({ data, questionNumber, totalQuestions }) {
 
 
     const handleSelect = (val) => {
+        setShowError(false);
         setSelectedAnswer(val);
     }
 
@@ -31,7 +33,7 @@ export default function Question({ data, questionNumber, totalQuestions }) {
 
     const OptionComponent = ({ text }) => {
         return (
-            <div className={"card border-2 mb-2 " + (selectedAnswer == text ? "border-info" : "border-light")} onClick={() => handleSelect(text)}>
+            <div className={"card border-2 mb-2 pointer " + (selectedAnswer == text ? "border-info" : "border-light")} onClick={() => handleSelect(text)}>
                 <div className="card-body">
                     <p className="card-text">{text}</p>
                 </div>
